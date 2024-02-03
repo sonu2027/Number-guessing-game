@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="bg-slate-800 text-white font-sans">
+
+    <h1 class="text-center text-2xl mt-10">Number Guessing Game</h1>
+
+    <form class="text-center mt-6" action="">
+        <input class="text-black rounded-sm mx-2 pl-1 w-32 h-8 focus:outline-none sm:w-36" type="number" name="" id="your-number" placeholder="your number" min="0" max="100">
+        <input class="text-black rounded-sm mx-2 w-32 h-8 focus:outline-none sm:w-36" type="number" name="" id="computer-number" readonly placeholder="computer number"><br>
+        <button class="bg-orange-500 py-1 px-4 mt-4 rounded-md">Submit</button>
+    </form>
+
+    <div class="text-center mt-1" id="result"></div>
+    <div class="text-center mt-1 text-red-600" id="0"></div>
+    <div class="text-center mt-1" id="prev-guess">Prev Guess: No data</div>
+    <div class="text-center mt-1" id="remain-guess">Guess Remaining:10</div>
+
+    <script>
+        let form = document.querySelector("form")
+        let result = document.getElementById("result")
+
+        let prev = document.getElementById("prev-guess")
+        let remain = document.getElementById("remain-guess")
+
+        let prevGuess = new Array();
+        let guessRemaining = 10
+
+        let id0=document.getElementById("0")
+
+        form.addEventListener("submit", (e) => {
+
+            e.preventDefault()
+
+            let input = document.querySelectorAll("input")
+            let generateNumber = (Math.random() * 100).toFixed(0)
+
+            if (guessRemaining > 0 && result.innerHTML != "You win" && input[0].value!="") {
+                if(input[0].value=="-0"){
+                    input[0].value="0"
+                }
+                id0.innerHTML=""
+                input[1].value = generateNumber
+                prevGuess.push(" "+input[0].value+" ")
+                prev.innerHTML = `Previous Guess: ${prevGuess}`
+                guessRemaining--;
+                remain.innerHTML = `Remaining Guess: ${guessRemaining}`
+
+                function remove() {
+                    input[0].value = ""
+                    input[1].value = ""
+                    result.innerHTML = ""
+                    prevGuess = new Array()
+                    prev.innerHTML = `Previous Guess: No data`
+                    guessRemaining = 10
+                    remain.innerHTML = `Remaining Guess: ${guessRemaining}`
+                }
+
+                if (Number(input[0].value) === Number(generateNumber)) {
+                    result.innerHTML = "You win"
+                    setTimeout(remove, 5000)
+                }
+                if (guessRemaining === 0) {
+                    result.innerHTML = "You loose the game"
+                    setTimeout(remove, 5000)
+                }
+            }
+
+            if(input[0].value==""){
+                id0.innerHTML="Input box should no be empty!"
+            }
+        })
+    </script>
+</body>
+
+</html>
